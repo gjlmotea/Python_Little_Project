@@ -1,17 +1,33 @@
+# -*- coding: utf-8 -*-
 import sys
 import re
 import requests
 from bs4 import BeautifulSoup
-import json
+import time
 import csv
+import unicodecsv
 
+current=time.strftime("%Y-%m-%d-%H%M",time.localtime()) #年月日時分
+print("Current Time:",current)
+filename = ['LOL_銅牌','LOL_銀牌','LOL_黃金','LOL_白金','LOL_鑽石','LOL_全部']#產生6個CSV檔 檔名
+
+try:
+    rec_time=str(input('是否依現在時間點來做CSV檔命名(以免覆蓋之前的時間點)? (y/N)'))
+except:
+    print("發生錯誤")
+    raise
+else:
+    if(rec_time=='y' or rec_time== 'Y'):
+        print("(依照時間點進行檔案命名)")
+        filename = ['LOL_銅牌'+current,'LOL_銀牌'+current,'LOL_黃金'+current,'LOL_白金'+current,'LOL_鑽石'+current,'LOL_全部'+current]
+    else:
+        print("(不依時間點進行檔案命名)")
 
 #網站的homepage(index page)排位為黃金
 ranking = ['bronze','silver','','platinum','diamond','all']     #網址的一部份
 #           銅牌      銀牌  黃金    白金      鑽石      全部
 
-#產生6個CSV檔 檔名
-filename = ['LOL_銅牌','LOL_銀牌','LOL_黃金','LOL_白金','LOL_鑽石','LOL_全部']
+
 
 
 rs = requests.session()
@@ -23,13 +39,13 @@ for r in range(len(ranking)):
     table = soup.select(".medium-24 tr")
 
 
-    with open(filename[r]+'.csv', 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(["編號","名字","選用率","勝率","禁用率","擊殺","死亡","助攻","場均五連殺","定位","定位","定位"])
+    with open(filename[r]+'.csv', 'wb') as csvfile:
+        writer = unicodecsv.writer(csvfile,encoding='utf-8-sig')
+        writer.writerow([u"編號","名字","選用率","勝率","禁用率","擊殺","死亡","助攻","場均五連殺","定位","定位","定位"])
 
 
         i=0
-        print("編號\t名字\t\t選用率\t勝率\t禁用率\t擊殺\t死亡\t助攻\t場均五連殺\t定位\t\t定位\t\t定位")
+        #print("編號\t名字\t\t選用率\t勝率\t禁用率\t擊殺\t死亡\t助攻\t場均五連殺\t定位\t\t定位\t\t定位")
 
 
         try:
@@ -77,12 +93,21 @@ for r in range(len(ranking)):
                        myspace2='\t'
                     else:
                        myspace2='\t\t'                
+
+
+                    role0 = role[0].encode("utf-8").decode("cp950", "ignore") # for print 簡字編碼問題 'cp950' codec can't encode character '\u8fdc'(远)
+                    role1 = role[1].encode("utf-8").decode("cp950", "ignore")
+                    role2 = role[2].encode("utf-8").decode("cp950", "ignore")
                     
-                    print(result[1],"\t",hero,myspace,pick[0]+"%\t",win[0]+"%\t",ban[0]+"%\t",kill[0]+"\t",death[0]+"\t",assist[0]+"\t",ave5k,"\t"+role[0]+myspace2+role[1]+"\t"+role[2]+"\t")
+                    #print(result[1],"\t",hero,myspace,pick[0]+"%\t",win[0]+"%\t",ban[0]+"%\t",kill[0]+"\t",death[0]+"\t",assist[0]+"\t",ave5k,"\t"+role[0]+myspace2+role[1]+"\t"+role[2]+"\t")
+                    print("%s\t%s%s%s%%\t%s%%\t%s%%\t%s\t%s\t%s\t%s\t%s%s%s\t%s\t"%(result[1],hero,myspace,pick[0],win[0],ban[0],kill[0],death[0],assist[0],ave5k,role[0],myspace2,role[1],role[2])) #速度較快
                     writer.writerow([result[1],hero,pick[0],win[0],ban[0],kill[0],death[0],assist[0],ave5k,role[0],role[1],role[2]])
-                    
-        except:
+            
+        except  IndexError as e:    #超過141個英雄範圍之index
             print("---Ranking: ",ranking[r],"End ---")
+            time.sleep(0.5)         #for requests.exceptions.ConnectionError
+        except Exception as e:
+            print(str(e))
 
 
 rs.close()
