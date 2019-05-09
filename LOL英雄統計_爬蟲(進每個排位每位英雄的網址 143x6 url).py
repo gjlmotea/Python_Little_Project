@@ -31,12 +31,12 @@ ranking = ['bronze','silver','','platinum','diamond','all']     #不同的排位
 rs = requests.session()
 
 for r in range(len(ranking)):   #r 0~5
-    url = 'https://www.leagueofgraphs.com/zh/champions/stats/'+ranking[r]
+    url = 'https://www.leagueofgraphs.com/zh/champions/builds/'+ranking[r]
     res = rs.get(url, verify=True)
     soup = BeautifulSoup(res.text, 'html.parser')
     table = soup.select(".medium-24 tr")
     hl = soup.select(".medium-24 tr td a")
-    hl_pat = re.compile(r'/zh/champions/stats/\w+') ##英雄之相對url，還沒對應到當前ranking(hurl)
+    hl_pat = re.compile(r'/zh/champions/builds/\w+') ##英雄之相對url，還沒對應到當前ranking(hurl)
 
     with open(filename[r]+'.csv', 'wb') as csvfile:
         writer = unicodecsv.writer(csvfile,encoding='utf-8-sig')
@@ -95,9 +95,9 @@ for r in range(len(ranking)):   #r 0~5
                        myspace2='\t'
                     else:
                        myspace2='\t\t'
-                    
                     hlfind = hl_pat.findall(str(hl[h]))     #所有匹配hl_pat的相對url 在當前ranking中
                     hurl = 'https://www.leagueofgraphs.com'+str(hlfind[0])+'/'+str(ranking[r]) #獲得在當下ranking中此英雄的絕對url
+                    hurl = hurl.replace("builds","stats")
                     print(hurl)
                     hlres = rs.get(hurl, verify=True)
                     hlsoup = BeautifulSoup(hlres.text, 'html.parser')
@@ -126,7 +126,8 @@ for r in range(len(ranking)):   #r 0~5
         except Exception as e:
             raise e
         
-#總共846(不同網址) => 141英雄 * 6種排位        
+#總共846(不同網址) => 141英雄 * 6種排位
+#2019-05-10更新，有143位英雄
     
 rs.close()
 print("====== END ======")
