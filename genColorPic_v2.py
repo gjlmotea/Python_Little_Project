@@ -7,8 +7,6 @@ height = 10
 width = 10
 count = 0
 interval = 4
-#RGB_start_value = 0
-#RGB_end_value = 255
 
 def check_RGB_range(R,G,B):
     if R < 0: R = 0
