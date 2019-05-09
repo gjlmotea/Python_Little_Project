@@ -15,5 +15,5 @@ RGB生成純色圖片
 ### [genColorPic_v2.py]  
 RGB生成純色圖片(連續色彩)  
 
-# update by GJLMoTea 2019-05-10  
+###### update by GJLMoTea 2019-05-10  
   
