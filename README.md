@@ -4,12 +4,15 @@
 
 
 # 【爬蟲程式，爬取LOL戰績網的英雄資訊  → 對象網站 https://www.leagueofgraphs.com/zh/champions/builds 】 
+※ 預設產生6個CSV檔
 $ pip3 requests bs4 unicodecsv  
 ### [LOL英雄統計_爬蟲(進每個排位每位英雄的網址 143位英雄x6 url).py]  
 ### [LOL英雄統計_爬蟲(每個排位 6 url).py]  
     
     
-# 【純色圖片產生程式 for Windows桌面背景幻燈片】  
+# 【純色圖片產生程式 for Windows桌面背景幻燈片】 
+※ 預設產生4096張、約300KB的圖片檔
+$ pip3 install opencv-python matplotlib
 ### [genColorPic_v1.py]  
 RGB生成純色圖片  
 ### [genColorPic_v2.py]  
