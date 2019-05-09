@@ -33,7 +33,7 @@ ranking = ['bronze','silver','','platinum','diamond','all']     #網址的一部
 rs = requests.session()
 
 for r in range(len(ranking)):
-    url = 'https://www.leagueofgraphs.com/zh/champions/stats/'+ranking[r]
+    url = 'https://www.leagueofgraphs.com/zh/champions/builds/'+ranking[r]
     res = rs.get(url, verify=True)
     soup = BeautifulSoup(res.text, 'html.parser')
     table = soup.select(".medium-24 tr")
