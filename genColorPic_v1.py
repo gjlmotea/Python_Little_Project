@@ -7,8 +7,6 @@ height = 10
 width = 10
 count = 0
 interval = 16
-#RGB_start_value = 0
-#RGB_end_value = 255
 
 for R in range(0, 256 , interval):
     for G in range(0, 256 , interval):
