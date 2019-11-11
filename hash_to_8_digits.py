@@ -16,8 +16,6 @@ for s in s_list:
     print(int(hashlib.sha224(s.encode('utf-8')).hexdigest(), 16) % (10 ** 8))
     print(int(hashlib.sha384(s.encode('utf-8')).hexdigest(), 16) % (10 ** 8))
     print(int(hashlib.sha512(s.encode('utf-8')).hexdigest(), 16) % (10 ** 8))
-    #print(int(hashlib.new('ripemd160')(s.encode('utf-8')).hexdigest(), 16) % (10 ** 8))
-    #print(int(s)*2654435761 % (2^32))
 
 hash = hashlib.md5()
 hash.update(b"711")
