@@ -29,12 +29,14 @@ ranking = ['bronze','silver','','platinum','diamond','all']     #網址的一部
 
 
 
+headers = {}
+headers['User-Agent'] = "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36"
 
 rs = requests.session()
 
 for r in range(len(ranking)):
     url = 'https://www.leagueofgraphs.com/zh/champions/builds/'+ranking[r]
-    res = rs.get(url, verify=True)
+    res = rs.get(url, verify=True, headers=headers)
     soup = BeautifulSoup(res.text, 'html.parser')
     table = soup.select(".medium-24 tr")
 
