@@ -1,3 +1,4 @@
+import os
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,6 +8,12 @@ height = 10
 width = 10
 count = 0
 interval = 4
+
+folder_name = "color"
+try: 
+    os.mkdir(folder_name) 
+except OSError as error: 
+    print(error) 
 
 def check_RGB_range(R,G,B):
     if R < 0: R = 0
@@ -21,7 +28,7 @@ def save_RGB_image(R,G,B,count):
     image = np.full((height ,width ,3),(R,G,B),dtype=np.uint8)
     image_name = str(count).zfill(3)+".png"	#補零補到三位數 對齊
     # print(image_name)    
-    cv2.imwrite(image_name, image)
+    cv2.imwrite(folder_name + "/" + image_name, image)
 
 def show_RGB_image(R,G,B,count):
     image = np.full((height ,width ,3),(R,G,B),dtype=np.uint8)
@@ -99,4 +106,3 @@ while(1):
     if(R == 0 and G == 255 and B == 255): state = 5
     if(R == 0 and G == 0 and B == 255): state = 6
     if(R == 255 and G == 0 and B == 255): state = 7
-
